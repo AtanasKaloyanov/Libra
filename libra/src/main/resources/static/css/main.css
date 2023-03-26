@@ -1,0 +1,11 @@
+/*import за използване на картинка от fontawesome*/
+@import url('https://use.fontawesome.com/releases/v6.2.1/css/all.css');
+
+body {
+    background-image: url('/images/book.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;
+}
