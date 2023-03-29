@@ -1,5 +1,7 @@
 package bg.softuni.libra.service;
 
+import bg.softuni.libra.mapper.BookMapper;
+import bg.softuni.libra.model.dto.AddBookDTO;
 import bg.softuni.libra.model.entity.BookEntity;
 import bg.softuni.libra.model.entity.UserEntity;
 import bg.softuni.libra.model.entity.WriterEntity;
@@ -16,11 +18,13 @@ public class BookService {
     private final WriterRepository writerRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
-    public BookService(WriterRepository writerRepository, UserRepository userRepository, BookRepository bookRepository) {
+    public BookService(WriterRepository writerRepository, UserRepository userRepository, BookRepository bookRepository, BookMapper bookMapper) {
         this.writerRepository = writerRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
     }
 
     public void booksInit() {
@@ -108,19 +112,20 @@ public class BookService {
         this.bookRepository.save(timeShelter);
     }
 
-//    public void addOffer(AddOfferDTO addOfferDTO, UserDetails userDetails) {
-//        OfferEntity newOffer = offerMapper.
-//                addOfferDtoToOfferEntity(addOfferDTO);
-//
-//        UserEntity seller = userRepository.findByEmail(userDetails.getUsername()).
-//                orElseThrow();
-//
-//        ModelEntity model = modelRepository.findById(addOfferDTO.getModelId()).
-//                orElseThrow();
-//
-//        newOffer.setModel(model);
-//        newOffer.setSeller(seller);
-//
-//        offerRepository.save(newOffer);
-//    }
+    public void addBook(AddBookDTO addBookDTO, UserDetails userDetails) {
+        BookEntity newBook = this.bookMapper.
+                addBookDtoToBookEntity(addBookDTO);
+
+        UserEntity reader = this.userRepository.findByEmail(userDetails.getUsername()).
+                orElseThrow();
+
+        WriterEntity writer = this.writerRepository.findById(addBookDTO.getBookId())
+                        .orElseThrow();
+
+
+        newBook.setWriter(writer);
+        newBook.setReader(reader);
+
+        this.bookRepository.save(newBook);
+    }
 }

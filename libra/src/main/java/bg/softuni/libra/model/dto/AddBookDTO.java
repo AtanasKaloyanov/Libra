@@ -11,7 +11,7 @@ import javax.validation.constraints.Positive;
 public class AddBookDTO {
     @NotNull
     @Min(1)
-    private Long modelId;
+    private Long bookId;
     @NotNull
     private GenreEnum genre;
 
@@ -28,9 +28,64 @@ public class AddBookDTO {
     private Integer year;
 
     @NotEmpty
-    private String description;
+    private String resume;
 
     @NotNull
     private CoverEnum cover;
 
+    public Long getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
+    }
+
+    public GenreEnum getGenre() {
+        return genre;
+    }
+
+    public void setGenre(GenreEnum genre) {
+        this.genre = genre;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Integer getPages() {
+        return pages;
+    }
+
+    public void setPages(Integer pages) {
+        this.pages = pages;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public String getResume() {
+        return resume;
+    }
+
+    public void setResume(String resume) {
+        this.resume = resume;
+    }
+
+    public CoverEnum getCover() {
+        return cover;
+    }
+
+    public void setCover(CoverEnum cover) {
+        this.cover = cover;
+    }
 }

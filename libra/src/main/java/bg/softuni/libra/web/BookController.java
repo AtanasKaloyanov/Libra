@@ -1,7 +1,11 @@
 package bg.softuni.libra.web;
 
+import bg.softuni.libra.model.dto.AddBookDTO;
+import bg.softuni.libra.service.BookService;
+import bg.softuni.libra.service.PublisherService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,32 +14,49 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+@Controller
 public class BookController {
-//    @GetMapping("/offers/add")
-//    public String addOffer(Model model) {
-//        if (!model.containsAttribute("addOfferModel")) {
-//            model.addAttribute("addOfferModel", new AddOfferDTO());
-//        }
-//        model.addAttribute("brands", brandService.getAllBrands());
-//
-//        return "offer-add";
-//    }
-//
-//    @PostMapping("/offers/add")
-//    public String addOffer(@Valid AddOfferDTO addOfferModel,
-//                           BindingResult bindingResult,
-//                           RedirectAttributes redirectAttributes,
-//                           @AuthenticationPrincipal UserDetails userDetails) {
-//
-//        if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("addOfferModel", addOfferModel);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOfferModel",
-//                    bindingResult);
-//            return "redirect:/offers/add";
-//        }
-//
-//        offerService.addOffer(addOfferModel, userDetails);
-//
-//        return "redirect:/offers/all";
-//    }
+
+    private final BookService bookService;
+
+    private final PublisherService publisherService;
+
+    public BookController(BookService bookService, PublisherService publisherService) {
+        this.bookService = bookService;
+        this.publisherService = publisherService;
+    }
+
+    @GetMapping("/offers/all")
+    public String allOffers() {
+        return "books";
+    }
+
+    @GetMapping("/books/add")
+    public String addBook(Model model) {
+        if (!model.containsAttribute("addBookModel")) {
+            model.addAttribute("addBookModel", new AddBookDTO());
+        }
+        model.addAttribute("publishers", publisherService.getAllPublishers());
+
+        return "book-add";
+    }
+
+    @PostMapping("/books/add")
+    public String addBook(@Valid AddBookDTO addBookModel,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes,
+                           @AuthenticationPrincipal UserDetails userDetails) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("addBookModel", addBookModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBookModel",
+                    bindingResult);
+            return "redirect:/books/add";
+        }
+
+        bookService.addBook(addBookModel, userDetails);
+
+      //  return "redirect:/books/all";
+        return "hello";
+    }
 }

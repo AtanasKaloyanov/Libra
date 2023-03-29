@@ -16,33 +16,33 @@
 <div th:replace="fragments/navbar">Navbar</div>
 
 <div class="container">
-    <h2 class="text-center text-white">Upload Offer</h2>
-    <form th:action="@{/offers/add}"
+    <h2 class="text-center text-white">Upload Book</h2>
+    <form th:action="@{/books/add}"
           th:method="post"
-          th:object="${addOfferModel}"
+          th:object="${addBookModel}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
         <div class="row">
 
             <div class="form-group col-md-6 mb-3">
-                <label class="text-center text-white font-weight-bold" for="modelId">Model</label>
-                <select id="modelId"
-                        name="modelId"
+                <label class="text-center text-white font-weight-bold" for="bookId">Writer</label>
+                <select id="bookId"
+                        name="bookId"
                         th:errorclass="is-invalid"
                         class="form-control">
-                    <option value="">- Select a model -</option>
+                    <option value="">- Select a writer -</option>
                     <optgroup
-                            th:each="brand : ${brands}"
-                            th:label="${brand.name}">
+                            th:each="publisher : ${publishers}"
+                            th:label="${publisher.name}">
                         <option
-                                th:each="model : ${brand.models}"
-                                th:text="${model.name}"
-                                th:value="${model.id}"
-                                th:selected="*{modelId} == ${model.id}">Model
+                                th:each="writer : ${publisher.writers}"
+                                th:text="${writer.name}"
+                                th:value="${writer.id}"
+                                th:selected="*{bookId} == ${writer.id}">Writer
                         </option>
                     </optgroup>
                 </select>
                 <p class="invalid-feedback errors alert alert-danger">
-                    Vechicle model is required.
+                    The writer of the book is required.
                 </p>
             </div>
             <div class="form-group col-md-6 mb-3">
@@ -53,7 +53,7 @@
                         th:errorclass="is-invalid"
                         type="number"
                         min="0"
-                        step="100"
+                        step="0.20"
                         class="form-control"
                         placeholder="Suggested price"
                 />
@@ -64,46 +64,46 @@
         </div>
         <div class="row">
             <div class="form-group col-md-6 mb-3">
-                <label class="text-center text-white font-weight-bold" for="engine">Engine</label>
+                <label class="text-center text-white font-weight-bold" for="genre">Genre</label>
                 <select
-                        id="engine"
-                        name="engine"
+                        id="genre"
+                        name="genre"
                         th:errorclass="is-invalid"
                         class="form-control">
-                    <option value="">- Select engine type -</option>
-                    <option th:each="e : ${T(bg.softuni.mobilele.model.enums.EngineEnum).values()}"
+                    <option value="">- Select genre -</option>
+                    <option th:each="e : ${T(bg.softuni.libra.model.entity.enums.GenreEnum).values()}"
                             th:text="${e}"
                             th:value="${e}"
-                            th:selected="${e} == *{engine}">
-                        Engine type
+                            th:selected="${e} == *{genre}">
+                        Genre
                     </option>
                 </select>
                 <p class="invalid-feedback errors alert alert-danger">
-                    Engine type is required.
+                    Genre is required.
                 </p>
             </div>
             <div class="form-group col-md-6 mb-3">
-                <label class="text-center text-white font-weight-bold" for="transmission">Transmission</label>
-                <select id="transmission"
-                        name="transmission"
+                <label class="text-center text-white font-weight-bold" for="cover">Cover</label>
+                <select id="cover"
+                        name="cover"
                         th:errorclass="is-invalid"
                         class="form-control">
-                    <option value="">- Select transmission type -</option>
-                    <option th:each="e : ${T(bg.softuni.mobilele.model.enums.TransmissionEnum).values()}"
+                    <option value="">- Select a cover -</option>
+                    <option th:each="e : ${T(bg.softuni.libra.model.entity.enums.CoverEnum).values()}"
                             th:text="${e}"
                             th:value="${e}"
-                            th:selected="${e} == *{transmission}">
-                        Transmission type
+                            th:selected="${e} == *{cover}">
+                        Cover
                     </option>
                 </select>
                 <p class="invalid-feedback errors alert alert-danger">
-                    Transmission type is required.
+                    The cover is required.
                 </p>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-6 mb-3">
-                <label for="year" class="text-white font-weight-bold">Year</label>
+                <label for="year" class="text-white font-weight-bold">Year of publishing</label>
                 <input
                         id="year"
                         th:field="*{year}"
@@ -114,30 +114,30 @@
                         placeholder="Manufacturing year"
                 />
                 <p class="invalid-feedback errors alert alert-danger">
-                    Manufacturing year is required.
+                    The year of publishing is required.
                 </p>
             </div>
             <div class="form-group col-md-6 mb-3">
-                <label for="mileage" class="text-white font-weight-bold">Mileage</label>
+                <label for="pages" class="text-white font-weight-bold">Pages</label>
                 <input
-                        id="mileage"
-                        th:field="*{mileage}"
+                        id="pages"
+                        th:field="*{pages}"
                         th:errorclass="is-invalid"
                         type="number"
                         class="form-control"
-                        placeholder="Mileage in kilometers"
+                        placeholder="Number Pages"
                 />
                 <p class="invalid-feedback errors alert alert-danger">
-                    Mileage in kilometers is required.
+                    The pages are required.
                 </p>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="text-white font-weight-bold" for="description">Description</label>
+            <label class="text-white font-weight-bold" for="description">Resume</label>
             <textarea
                     id="description"
-                    th:field="*{description}"
+                    th:field="*{resume}"
                     th:errorclass="is-invalid"
                     type="textarea"
                     class="form-control"
@@ -146,23 +146,23 @@
             >
             </textarea>
             <p class="invalid-feedback errors alert alert-danger">
-                Description is required.
+                The resume is required.
             </p>
         </div>
-        <div class="form-group">
-            <label class="text-white font-weight-bold" for="imageUrl">Image URL</label>
-            <input
-                    id="imageUrl"
-                    th:field="*{imageUrl}"
-                    th:errorclass="is-invalid"
-                    type="url"
-                    class="form-control"
-                    placeholder="Put vehicle image URL here"
-            />
-            <p class="invalid-feedback errors alert alert-danger">
-                Vehicle image URL is required.
-            </p>
-        </div>
+<!--        <div class="form-group">-->
+<!--            <label class="text-white font-weight-bold" for="imageUrl">Image URL</label>-->
+<!--            <input-->
+<!--                    id="imageUrl"-->
+<!--                    th:field="*{imageUrl}"-->
+<!--                    th:errorclass="is-invalid"-->
+<!--                    type="url"-->
+<!--                    class="form-control"-->
+<!--                    placeholder="Put vehicle image URL here"-->
+<!--            />-->
+<!--            <p class="invalid-feedback errors alert alert-danger">-->
+<!--                Vehicle image URL is required.-->
+<!--            </p>-->
+<!--        </div>-->
 
         <div class="row">
             <div class="col col-md-4">
