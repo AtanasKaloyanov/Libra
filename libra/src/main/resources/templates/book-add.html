@@ -21,6 +21,22 @@
           th:method="post"
           th:object="${addBookModel}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+
+        <div class="form-group">
+            <label class="text-white font-weight-bold" for="name">Book name</label>
+            <input
+                    id="name"
+                    th:field="*{name}"
+                    th:errorclass="is-invalid"
+                    type="text"
+                    class="form-control"
+                    placeholder="The name of the book"
+            />
+            <p class="invalid-feedback errors alert alert-danger">
+                Book name is required.
+            </p>
+        </div>
+
         <div class="row">
 
             <div class="form-group col-md-6 mb-3">
@@ -149,20 +165,6 @@
                 The resume is required.
             </p>
         </div>
-<!--        <div class="form-group">-->
-<!--            <label class="text-white font-weight-bold" for="imageUrl">Image URL</label>-->
-<!--            <input-->
-<!--                    id="imageUrl"-->
-<!--                    th:field="*{imageUrl}"-->
-<!--                    th:errorclass="is-invalid"-->
-<!--                    type="url"-->
-<!--                    class="form-control"-->
-<!--                    placeholder="Put vehicle image URL here"-->
-<!--            />-->
-<!--            <p class="invalid-feedback errors alert alert-danger">-->
-<!--                Vehicle image URL is required.-->
-<!--            </p>-->
-<!--        </div>-->
 
         <div class="row">
             <div class="col col-md-4">

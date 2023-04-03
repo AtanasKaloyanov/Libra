@@ -7,8 +7,13 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
-    @Configuration
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@Configuration
     public class I18NConfig {
 
         @Bean
@@ -32,5 +37,6 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
             resourceBundleMessageSource.setDefaultEncoding("UTF-8");
             return resourceBundleMessageSource;
         }
+
 
 }

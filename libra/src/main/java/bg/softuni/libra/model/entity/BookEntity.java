@@ -8,11 +8,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "books")
 public class BookEntity extends BaseEntity {
+
+    @Column(nullable = false)
+    private String name;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private GenreEnum genre;
-
-    private String imageUrl;
 
     @Column(nullable = false)
     private Integer pages;
@@ -35,20 +36,23 @@ public class BookEntity extends BaseEntity {
     @ManyToOne
     private UserEntity reader;
 
+    public BookEntity() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public GenreEnum getGenre() {
         return genre;
     }
 
     public void setGenre(GenreEnum genre) {
         this.genre = genre;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public Integer getPages() {

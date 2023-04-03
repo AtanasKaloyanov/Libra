@@ -2,6 +2,7 @@ package bg.softuni.libra.service;
 
 import bg.softuni.libra.mapper.BookMapper;
 import bg.softuni.libra.model.dto.AddBookDTO;
+import bg.softuni.libra.model.dto.BookDetailDTO;
 import bg.softuni.libra.model.entity.BookEntity;
 import bg.softuni.libra.model.entity.UserEntity;
 import bg.softuni.libra.model.entity.WriterEntity;
@@ -10,6 +11,8 @@ import bg.softuni.libra.model.entity.enums.GenreEnum;
 import bg.softuni.libra.repository.BookRepository;
 import bg.softuni.libra.repository.UserRepository;
 import bg.softuni.libra.repository.WriterRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +42,7 @@ public class BookService {
 
         // 1984
         BookEntity b1984 = new BookEntity();
+        b1984.setName("1984");
         b1984.setGenre(GenreEnum.DISTOPIAN);
         b1984.setPages(316);
         b1984.setPrice(16.00);
@@ -50,6 +54,7 @@ public class BookService {
 
         // Animal Farm
         BookEntity animalFarm = new BookEntity();
+        animalFarm.setName("animalFarm");
         animalFarm.setGenre(GenreEnum.DISTOPIAN);
         animalFarm.setPages(110);
         animalFarm.setPrice(12.00);
@@ -62,6 +67,7 @@ public class BookService {
 
         // Crime and Punishment
         BookEntity crimeAndPunishment = new BookEntity();
+        crimeAndPunishment.setName("crimeAndPunishment");
         crimeAndPunishment.setGenre(GenreEnum.REALISM);
         crimeAndPunishment.setPages(512);
         crimeAndPunishment.setPrice(30.00);
@@ -73,6 +79,7 @@ public class BookService {
 
         // Karamazov Brothers
         BookEntity karamazovBrothers = new BookEntity();
+        karamazovBrothers.setName("karamazovBrothers");
         karamazovBrothers.setGenre(GenreEnum.REALISM);
         karamazovBrothers.setPages(928);
         karamazovBrothers.setPrice(30.00);
@@ -84,6 +91,7 @@ public class BookService {
 
         // The Physics of Sorrow
         BookEntity thePhysicsOfSorrow = new BookEntity();
+        thePhysicsOfSorrow.setName("thePhysicsOfSorrow");
         thePhysicsOfSorrow.setGenre(GenreEnum.FICTION);
         thePhysicsOfSorrow.setPages(344);
         thePhysicsOfSorrow.setPrice(24.00);
@@ -95,6 +103,7 @@ public class BookService {
 
         // Time Shelter
         BookEntity timeShelter = new BookEntity();
+        timeShelter.setName("timeShelter");
         timeShelter.setGenre(GenreEnum.FICTION);
         timeShelter.setPages(372);
         timeShelter.setPrice(20.00);
@@ -128,4 +137,12 @@ public class BookService {
 
         this.bookRepository.save(newBook);
     }
+
+    public Page<BookDetailDTO> getAllBooks(Pageable pageable) {
+        return bookRepository.
+                findAll(pageable).
+                map(bookMapper::bookEntityToBookDetailDto);
+    }
+
+
 }

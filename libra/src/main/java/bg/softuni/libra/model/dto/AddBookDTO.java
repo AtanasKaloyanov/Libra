@@ -12,6 +12,9 @@ public class AddBookDTO {
     @NotNull
     @Min(1)
     private Long bookId;
+    @NotEmpty
+    private String name;
+
     @NotNull
     private GenreEnum genre;
 
@@ -23,7 +26,6 @@ public class AddBookDTO {
     @NotNull
     private Integer pages;
 
-    @Min(1900)
     @NotNull
     private Integer year;
 
@@ -39,6 +41,14 @@ public class AddBookDTO {
 
     public void setBookId(Long bookId) {
         this.bookId = bookId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public GenreEnum getGenre() {
