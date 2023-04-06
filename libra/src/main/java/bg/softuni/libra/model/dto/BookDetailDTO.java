@@ -3,8 +3,7 @@ package bg.softuni.libra.model.dto;
 import bg.softuni.libra.model.entity.enums.CoverEnum;
 import bg.softuni.libra.model.entity.enums.GenreEnum;
 
-import java.math.BigDecimal;
-import java.util.UUID;
+
 
 public class BookDetailDTO {
 
@@ -116,6 +115,10 @@ public class BookDetailDTO {
 
     public String getBookHighlight() {
         return this.writer + " - " +this.name;
+    }
+
+    public String getFullName() {
+        return this.readerFirstName + " " + this.readerLastName;
     }
 
 

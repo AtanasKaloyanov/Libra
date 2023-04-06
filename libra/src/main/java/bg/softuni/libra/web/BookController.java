@@ -1,21 +1,27 @@
 package bg.softuni.libra.web;
 
+import bg.softuni.libra.exception.ObjectNotFoundException;
 import bg.softuni.libra.model.dto.AddBookDTO;
 import bg.softuni.libra.service.BookService;
 import bg.softuni.libra.service.PublisherService;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @Controller
 public class BookController {
@@ -71,5 +77,29 @@ public class BookController {
         model.addAttribute("books", bookService.getAllBooks(pageable));
 
         return "books";
+    }
+
+    @GetMapping("/books/{id}")
+    public String getBookDetail(@PathVariable("id") Long id,
+                                 Model model) {
+
+        var bookDto =
+                this.bookService.findBookById(id).
+                        orElseThrow(() -> new ObjectNotFoundException("Book with ID " +
+                                id + " not found!"));
+
+        model.addAttribute("book", bookDto);
+
+        return "details";
+    }
+
+   // @PreAuthorize("@bookService.isOwner(#principal.name, #id)")
+    @PreAuthorize("isOwner(#id)")
+    @DeleteMapping("/books/{id}")
+    public String deleteBook(
+            @PathVariable("id") Long id) {
+        bookService.deleteBookById(id);
+
+        return "redirect:/books/all";
     }
 }

@@ -8,6 +8,7 @@ import bg.softuni.libra.model.entity.UserEntity;
 import bg.softuni.libra.model.entity.WriterEntity;
 import bg.softuni.libra.model.entity.enums.CoverEnum;
 import bg.softuni.libra.model.entity.enums.GenreEnum;
+import bg.softuni.libra.model.entity.enums.UserRoleEnum;
 import bg.softuni.libra.repository.BookRepository;
 import bg.softuni.libra.repository.UserRepository;
 import bg.softuni.libra.repository.WriterRepository;
@@ -15,6 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class BookService {
@@ -54,7 +58,7 @@ public class BookService {
 
         // Animal Farm
         BookEntity animalFarm = new BookEntity();
-        animalFarm.setName("animalFarm");
+        animalFarm.setName("Animal Farm");
         animalFarm.setGenre(GenreEnum.DISTOPIAN);
         animalFarm.setPages(110);
         animalFarm.setPrice(12.00);
@@ -67,7 +71,7 @@ public class BookService {
 
         // Crime and Punishment
         BookEntity crimeAndPunishment = new BookEntity();
-        crimeAndPunishment.setName("crimeAndPunishment");
+        crimeAndPunishment.setName("Crime And Punishment");
         crimeAndPunishment.setGenre(GenreEnum.REALISM);
         crimeAndPunishment.setPages(512);
         crimeAndPunishment.setPrice(30.00);
@@ -79,7 +83,7 @@ public class BookService {
 
         // Karamazov Brothers
         BookEntity karamazovBrothers = new BookEntity();
-        karamazovBrothers.setName("karamazovBrothers");
+        karamazovBrothers.setName("Karamazov Brothers");
         karamazovBrothers.setGenre(GenreEnum.REALISM);
         karamazovBrothers.setPages(928);
         karamazovBrothers.setPrice(30.00);
@@ -91,7 +95,7 @@ public class BookService {
 
         // The Physics of Sorrow
         BookEntity thePhysicsOfSorrow = new BookEntity();
-        thePhysicsOfSorrow.setName("thePhysicsOfSorrow");
+        thePhysicsOfSorrow.setName("The Physics Of Sorrow");
         thePhysicsOfSorrow.setGenre(GenreEnum.FICTION);
         thePhysicsOfSorrow.setPages(344);
         thePhysicsOfSorrow.setPrice(24.00);
@@ -103,7 +107,7 @@ public class BookService {
 
         // Time Shelter
         BookEntity timeShelter = new BookEntity();
-        timeShelter.setName("timeShelter");
+        timeShelter.setName("Time Shelter");
         timeShelter.setGenre(GenreEnum.FICTION);
         timeShelter.setPages(372);
         timeShelter.setPrice(20.00);
@@ -138,10 +142,45 @@ public class BookService {
         this.bookRepository.save(newBook);
     }
 
+    // books
     public Page<BookDetailDTO> getAllBooks(Pageable pageable) {
         return bookRepository.
                 findAll(pageable).
                 map(bookMapper::bookEntityToBookDetailDto);
+    }
+
+    // detail
+    public Optional<BookDetailDTO> findBookById(Long bookID) {
+        return bookRepository.
+                findById(bookID).
+                map(bookMapper::bookEntityToBookDetailDto);
+    }
+
+    public boolean isOwner(String userName, Long bookId) {
+
+        boolean isOwner = bookRepository.
+                findById(bookId).
+                filter(o -> o.getReader().getEmail().equals(userName)).
+                isPresent();
+
+        if (isOwner) {
+            return true;
+        }
+
+        return userRepository.
+                findByEmail(userName).
+                filter(this::isAdmin).
+                isPresent();
+    }
+
+    private boolean isAdmin(UserEntity user) {
+        return user.getUserRoles().
+                stream().
+                anyMatch(r -> r.getUserRole() == UserRoleEnum.ADMIN);
+    }
+
+    public void deleteBookById(Long bookId) {
+        bookRepository.deleteById(bookId);
     }
 
 
