@@ -3,6 +3,7 @@ package bg.softuni.libra.service;
 import bg.softuni.libra.mapper.BookMapper;
 import bg.softuni.libra.model.dto.AddBookDTO;
 import bg.softuni.libra.model.dto.BookDetailDTO;
+import bg.softuni.libra.model.dto.SearchBookDTO;
 import bg.softuni.libra.model.entity.BookEntity;
 import bg.softuni.libra.model.entity.UserEntity;
 import bg.softuni.libra.model.entity.WriterEntity;
@@ -10,6 +11,7 @@ import bg.softuni.libra.model.entity.enums.CoverEnum;
 import bg.softuni.libra.model.entity.enums.GenreEnum;
 import bg.softuni.libra.model.entity.enums.UserRoleEnum;
 import bg.softuni.libra.repository.BookRepository;
+import bg.softuni.libra.repository.BookSpecification;
 import bg.softuni.libra.repository.UserRepository;
 import bg.softuni.libra.repository.WriterRepository;
 import org.springframework.data.domain.Page;
@@ -17,8 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class BookService {
@@ -181,6 +183,18 @@ public class BookService {
 
     public void deleteBookById(Long bookId) {
         bookRepository.deleteById(bookId);
+    }
+
+    public Optional<AddBookDTO> getBookEditDetails(Long bookID) {
+        return bookRepository.
+                findById(bookID).
+                map(bookMapper::bookEntityToCreateOrUpdateBookDtoTo);
+    }
+
+    public List<BookDetailDTO> searchBook(SearchBookDTO searchBookDTO) {
+        return this.bookRepository.findAll(new BookSpecification(searchBookDTO)).
+                stream().map(book -> bookMapper.bookEntityToBookDetailDto(book)).
+                toList();
     }
 
 

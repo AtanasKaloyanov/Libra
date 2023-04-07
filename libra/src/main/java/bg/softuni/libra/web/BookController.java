@@ -2,6 +2,7 @@ package bg.softuni.libra.web;
 
 import bg.softuni.libra.exception.ObjectNotFoundException;
 import bg.softuni.libra.model.dto.AddBookDTO;
+import bg.softuni.libra.model.dto.SearchBookDTO;
 import bg.softuni.libra.service.BookService;
 import bg.softuni.libra.service.PublisherService;
 
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.UUID;
 
 @Controller
 public class BookController {
@@ -101,5 +101,40 @@ public class BookController {
         bookService.deleteBookById(id);
 
         return "redirect:/books/all";
+    }
+
+    @GetMapping("/books/{id}/edit")
+    public String edit(@PathVariable("id") Long id,
+                       Model model) {
+        var book = bookService.getBookEditDetails(id).
+                orElseThrow(() -> new ObjectNotFoundException("Book with ID "+ id + "not found"));
+
+        model.addAttribute("book", book);
+
+        return "details";
+    }
+
+    @GetMapping("/books/search")
+    public String searchQuery(@Valid SearchBookDTO searchBookDTO,
+                              BindingResult bindingResult,
+                              Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("searchBookModel", searchBookDTO);
+            model.addAttribute(
+                    "org.springframework.validation.BindingResult.searchBookModel",
+                    bindingResult);
+            return "book-search";
+        }
+
+        if (!model.containsAttribute("searchBookModel")) {
+            model.addAttribute("searchBookModel", searchBookDTO);
+        }
+
+        if (!searchBookDTO.isEmpty()) {
+            model.addAttribute("books", bookService.searchBook(searchBookDTO));
+        }
+
+        return "book-search";
     }
 }

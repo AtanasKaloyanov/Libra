@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Libra</title>
+  <link rel="stylesheet" href="/css/reset-css.css"/>
+  <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+  <script src="/js/jquery-3.5.1.slim.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div th:replace="fragments/navbar">Navbar</div>
+<div class="container">
+  <h2 class="text-center text-white">Search for books</h2>
+  <form
+          th:method="GET"
+          th:action="@{/books/search}"
+          th:object="${searchBookModel}"
+          class="form-inline"
+          style="justify-content: center; margin-top: 50px;"
+  >
+    <div style="position: relative">
+      <input
+              th:field="*{writer}"
+              th:errorclass="is-invalid"
+              class="form-control mr-sm-2"
+              style="width: 280px;"
+              type="search"
+              placeholder="Writer name..."
+              aria-label="Search"
+              id="model"
+      />
+      <input
+              th:field="*{minPrice}"
+              th:errorclass="is-invalid"
+              class="form-control mr-sm-2"
+              style="width: 280px;"
+              type="search"
+              placeholder="Min price..."
+              aria-label="Search"
+              id="minPrice"
+      />
+      <input
+              th:field="*{maxPrice}"
+              th:errorclass="is-invalid"
+              class="form-control mr-sm-2"
+              style="width: 280px;"
+              type="search"
+              placeholder="Max price..."
+              aria-label="Search"
+              id="maxPrice"
+      />
+      <small
+              id="searchOfferHelpInline"
+              class="bg-danger text-light rounded invalid-feedback"
+              style="width: 97%; position: absolute; padding: 3px 15px; text-align: center;"
+      >
+        Try writing something this time.
+      </small>
+    </div>
+    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+  </form>
+</div>
+
+<div class="offers row mx-auto d-flex flex-row justify-content-center" style="margin-top: 40px;">
+
+  <div th:each="book: ${books}" class="offer card col-sm-6 col-md-3  col-lg-2 m-1 p-0">
+    <div class="card-body pb-1">
+      <h5 class="card-title" th:text="${book.getBookHighlight}"></h5>
+    </div>
+    <ul class="offer-details list-group list-group-flush">
+      <li class="list-group-item">
+        <div class="card-text"><span th:text="'Pages: ' + ${book.pages}"></span></div>
+        <div class="card-text"><span th:text="'Price: ' + ${book.price} + ' lv'"></span></div>
+        <div class="card-text"><span th:text="'Genre: ' + ${book.genre}"></span></div>
+        <div class="card-text"><span th:text="'Cover: ' + ${book.cover}"></span></div>
+      </li>
+    </ul>
+    <div class="card-body">
+      <a class="card-link" href="/books/all">Details</a>
+    </div>
+  </div>
+  <h3 th:if="${books != null && books.size == 0}" class="text-info">There are no books with this parameters yet</h3>
+</div>
+
+<div>
+  <div th:replace="fragments/footer"></div>
+</div>
+
+</body>
+</html>

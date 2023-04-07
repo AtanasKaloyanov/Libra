@@ -19,7 +19,7 @@
 
 
 <div class="container-fluid">
-    <h5 class="text-center text-white mt-5">
+    <h2 class="text-center text-white mt-5">
         Welcome to Libra,
         <span
                 sec:authorize="isAuthenticated()"
@@ -29,11 +29,11 @@
         <span sec:authorize="!isAuthenticated()">
             Anonymous
         </span>
-    </h5>
+    </h2>
 </div>
 
 <div>
-    <footer> </footer>
+    <div th:replace="fragments/footer"></div>
 </div>
 
 </body>
